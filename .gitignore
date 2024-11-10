@@ -1,0 +1,31 @@
+# Arquivos da Unreal Engine
+*.sln
+*.suo
+*.xcodeproj
+*.xcworkspace
+*.xcconfig
+*.hmap
+*.DS_Store
+*.log
+*.dmp
+*.tmp
+
+# Pastas geradas automaticamente pela Unreal Engine
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# Outros arquivos e pastas que podem ser ignorados
+.vscode/
+.idea/
+*.opensdf
+*.sdf
+*.suo
+*.ipch
+*.aps
+*.ncb
+*.user
+*.suo
+*.sln.docstates
+.vscode/
