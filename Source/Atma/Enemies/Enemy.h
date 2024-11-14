@@ -9,36 +9,35 @@
 //     -------------------------------------------------------------------------------------------
 //     -------------------------------------------------------------------------------------------
 //     Project   : AtmaGamingTest                                               ------------------
-//     Date      : 2024-11-09                                                   ------------------
+//     Date      : 2024-11-11                                                   ------------------
 //     Author    : viniciusteologia@gmail.com                                   ------------------
 //     -------------------------------------------------------------------------------------------
 //     -------------------------------------------------------------------------------------------
 
 #pragma once
 
-#include "Components/BoxComponent.h"
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "GameFramework/Actor.h"
+#include "Components/BoxComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 //
-#include "PlayerShip.generated.h"
+#include "Enemy.generated.h"
 
 UCLASS()
-class ATMA_API APlayerShip : public APawn
+class ATMA_API AEnemy : public AActor
 {
 	GENERATED_BODY()
-
-public:
-	APlayerShip();
+	
+public:	
+	AEnemy();
 
 protected:
 	virtual void BeginPlay() override;
 
 public:	
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
 public:
 	// methods
 

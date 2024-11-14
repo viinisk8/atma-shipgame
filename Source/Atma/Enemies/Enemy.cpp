@@ -9,46 +9,45 @@
 //     -------------------------------------------------------------------------------------------
 //     -------------------------------------------------------------------------------------------
 //     Project   : AtmaGamingTest                                               ------------------
-//     Date      : 2024-11-09                                                   ------------------
+//     Date      : 2024-11-11                                                   ------------------
 //     Author    : viniciusteologia@gmail.com                                   ------------------
 //     -------------------------------------------------------------------------------------------
 //     -------------------------------------------------------------------------------------------
 
-#pragma once
 
-#include "Components/BoxComponent.h"
-#include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
-#include "Components/SkeletalMeshComponent.h"
-#include "GameFramework/FloatingPawnMovement.h"
-//
-#include "PlayerShip.generated.h"
+#include "Enemy.h"
 
-UCLASS()
-class ATMA_API APlayerShip : public APawn
+//     -------------------------------------------------------------------------------------------
+AEnemy::AEnemy()
 {
-	GENERATED_BODY()
+	PrimaryActorTick.bCanEverTick = true;
 
-public:
-	APlayerShip();
+	//
+	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
+	RootComponent = BoxComponent;
+	BoxComponent->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
+	BoxComponent->SetCollisionProfileName(TEXT("Pawn"));
 
-protected:
-	virtual void BeginPlay() override;
+	//
+	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
+	SkeletalMeshComponent->SetupAttachment(BoxComponent);
 
-public:	
-	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	//
+	FloatingPawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingPawnMovement"));
+}
 
-public:
-	// methods
+//     -------------------------------------------------------------------------------------------
+void AEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
 
-	// Properties
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Collision")
-	UBoxComponent* BoxComponent;
+//     -------------------------------------------------------------------------------------------
+void AEnemy::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mesh")
-	USkeletalMeshComponent* SkeletalMeshComponent;
+}
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
-	UFloatingPawnMovement* FloatingPawnMovement;
-};
+//     -------------------------------------------------------------------------------------------
