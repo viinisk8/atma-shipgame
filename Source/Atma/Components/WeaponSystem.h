@@ -9,52 +9,61 @@
 //     -------------------------------------------------------------------------------------------
 //     -------------------------------------------------------------------------------------------
 //     Project   : AtmaGamingTest                                               ------------------
-//     Date      : 2024-11-09                                                   ------------------
+//     Date      : 2024-11-14                                                   ------------------
 //     Author    : viniciusteologia@gmail.com                                   ------------------
 //     -------------------------------------------------------------------------------------------
 //     -------------------------------------------------------------------------------------------
 
-#include "PlayerShip.h"
+#pragma once
 
-//     -------------------------------------------------------------------------------------------
-APlayerShip::APlayerShip()
+#include "CoreMinimal.h"
+#include "Components/ActorComponent.h"
+//
+#include "WeaponSystem.generated.h"
+
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable, BlueprintType)
+class ATMA_API UWeaponSystem : public UActorComponent
 {
-	PrimaryActorTick.bCanEverTick = true;
+	GENERATED_BODY()
 
-	//
-	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
-	RootComponent = BoxComponent;
-	BoxComponent->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
-	BoxComponent->SetCollisionProfileName(TEXT("Pawn"));
+public:    
+	UWeaponSystem();
 
-	//
-	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
-	SkeletalMeshComponent->SetupAttachment(BoxComponent);
+protected:
+	virtual void BeginPlay() override;
 
-	//
-	FloatingPawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingPawnMovement"));
+public:
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	//
+	// methods
+
+	void StartReload();
+	void FinishReload();
 	
-}
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void FireWeapon(FVector Origin, FVector TargetDirection, float Range);
 
-//     -------------------------------------------------------------------------------------------
-void APlayerShip::BeginPlay()
-{
-	Super::BeginPlay();
-}
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void HandleFire();
+	
+	// Properties
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	float FireRange = 1000.0f;
 
-//     -------------------------------------------------------------------------------------------
-void APlayerShip::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	bool bDebugMode = false;
 
-//     -------------------------------------------------------------------------------------------
-void APlayerShip::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	float DebugDuration = 1.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	int32 MaxAmmo = 10;
 
-}
-
-//     -------------------------------------------------------------------------------------------
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	float ReloadTime = 4.0f;
+	
+	int32 CurrentAmmo;
+	bool bIsReloading;
+	FTimerHandle ReloadTimerHandle; 
+};

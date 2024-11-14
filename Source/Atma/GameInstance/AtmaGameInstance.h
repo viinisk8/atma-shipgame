@@ -9,52 +9,38 @@
 //     -------------------------------------------------------------------------------------------
 //     -------------------------------------------------------------------------------------------
 //     Project   : AtmaGamingTest                                               ------------------
-//     Date      : 2024-11-09                                                   ------------------
+//     Date      : 2024-11-14                                                   ------------------
 //     Author    : viniciusteologia@gmail.com                                   ------------------
 //     -------------------------------------------------------------------------------------------
 //     -------------------------------------------------------------------------------------------
 
-#include "PlayerShip.h"
+#pragma once
 
-//     -------------------------------------------------------------------------------------------
-APlayerShip::APlayerShip()
+#include "CoreMinimal.h"
+#include "Engine/GameInstance.h"
+#include "../Data/ENUM_StateOfShip.h"
+//
+#include "AtmaGameInstance.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStateOfShipChanged, EStateOfShip, NewState);
+
+UCLASS()
+class ATMA_API UAtmaGameInstance : public UGameInstance
 {
-	PrimaryActorTick.bCanEverTick = true;
+	GENERATED_BODY()
 
-	//
-	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent"));
-	RootComponent = BoxComponent;
-	BoxComponent->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
-	BoxComponent->SetCollisionProfileName(TEXT("Pawn"));
-
-	//
-	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
-	SkeletalMeshComponent->SetupAttachment(BoxComponent);
-
-	//
-	FloatingPawnMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingPawnMovement"));
-
-	//
+public:
+	// methods
+	UFUNCTION(BlueprintCallable)
+	void SetStateOfShip(EStateOfShip NewState);
 	
-}
+	// Properties
+	UPROPERTY(BlueprintReadWrite)
+	EStateOfShip StateOfShip;
 
-//     -------------------------------------------------------------------------------------------
-void APlayerShip::BeginPlay()
-{
-	Super::BeginPlay();
-}
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnStateOfShipChanged OnStateOfShipChanged;
 
-//     -------------------------------------------------------------------------------------------
-void APlayerShip::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-//     -------------------------------------------------------------------------------------------
-void APlayerShip::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
-//     -------------------------------------------------------------------------------------------
+	
+	
+};
