@@ -49,7 +49,7 @@ void UWeaponSystem::FireWeapon(FVector Origin, FVector TargetDirection, float Ra
 
     if (bDebugMode)
     {
-        DrawDebugLine(GetWorld(), Origin, EndPoint, FColor::Red, false, DebugDuration, 0, 1.0f);
+        DrawDebugLine(GetWorld(), Origin, EndPoint, FColor::White, false, DebugDuration, 0, 1.0f);
     }
 }
 
