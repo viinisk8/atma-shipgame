@@ -38,9 +38,11 @@ void UWeaponSystem::FireWeapon(FVector Origin, FVector TargetDirection, float Ra
             // Verifica se o ator tem o HealthComponent
             if (UHealthComponent* HealthComp = HitActor->FindComponentByClass<UHealthComponent>())
             {
-                // Subtrai o dano do valor de Health diretamente
-                HealthComp->Health -= ShotDamage;
-                UE_LOG(LogTemp, Warning, TEXT("Shot hit %s for %f damage. Remaining Health: %f"), *HitActor->GetName(), ShotDamage, HealthComp->Health);
+                // Aplica o dano através da função TakeDamage
+                HealthComp->TakeDamage(ShotDamage);
+
+                UE_LOG(LogTemp, Warning, TEXT("Shot hit %s for %f damage. Remaining Health: %f"),
+                    *HitActor->GetName(), ShotDamage, HealthComp->Health);
             }
         }
     }
