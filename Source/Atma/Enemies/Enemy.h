@@ -17,31 +17,27 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Pawn.h"
 #include "Components/BoxComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
-//
 #include "Enemy.generated.h"
 
 UCLASS()
-class ATMA_API AEnemy : public AActor
+class ATMA_API AEnemy : public APawn
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	AEnemy();
 
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:    
 	virtual void Tick(float DeltaTime) override;
-	
-public:
-	// methods
 
-	// Properties
+	// Enemy components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Collision")
 	UBoxComponent* BoxComponent;
 
@@ -50,4 +46,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	UFloatingPawnMovement* FloatingPawnMovement;
+
+private:
+	void MoveTowardsPlayer(); // Custom function for AI movement towards player
+	void AttackPlayer(); // Custom function for automatic attack
 };

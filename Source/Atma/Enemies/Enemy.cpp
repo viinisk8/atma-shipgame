@@ -16,10 +16,11 @@
 
 
 #include "Enemy.h"
+#include "Kismet/GameplayStatics.h"
 
-//     -------------------------------------------------------------------------------------------
 AEnemy::AEnemy()
 {
+	//
 	PrimaryActorTick.bCanEverTick = true;
 
 	//
@@ -40,14 +41,30 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
-//     -------------------------------------------------------------------------------------------
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//
+	MoveTowardsPlayer();
+	AttackPlayer();
 }
 
 //     -------------------------------------------------------------------------------------------
+void AEnemy::MoveTowardsPlayer()
+{
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	if (PlayerPawn)
+	{
+		FVector Direction = (PlayerPawn->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+		AddMovementInput(Direction, 1.0f);
+	}
+}
+
+//     -------------------------------------------------------------------------------------------
+void AEnemy::AttackPlayer()
+{
+	//
+}
