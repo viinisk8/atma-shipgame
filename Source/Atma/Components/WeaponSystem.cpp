@@ -1,25 +1,46 @@
+//     -------------------------------------------------------------------------------------------
+//     -------------------------------------------------------------------------------------------
+//     █████╗ ████████╗███╗   ███╗ █████╗      ██████╗  █████╗ ███╗   ███╗██╗███╗   ██╗ ██████╗ 
+//     ██╔══██╗╚══██╔══╝████╗ ████║██╔══██╗    ██╔════╝ ██╔══██╗████╗ ████║██║████╗  ██║██╔════╝ 
+//     ███████║   ██║   ██╔████╔██║███████║    ██║  ███╗███████║██╔████╔██║██║██╔██╗ ██║██║  ███╗
+//     ██╔══██║   ██║   ██║╚██╔╝██║██╔══██║    ██║   ██║██╔══██║██║╚██╔╝██║██║██║╚██╗██║██║   ██║
+//     ██║  ██║   ██║   ██║ ╚═╝ ██║██║  ██║    ╚██████╔╝██║  ██║██║ ╚═╝ ██║██║██║ ╚████║╚██████╔╝
+//     ╚═╝  ╚═╝   ╚═╝   ╚═╝     ╚═╝╚═╝  ╚═╝     ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝
+//     -------------------------------------------------------------------------------------------
+//     -------------------------------------------------------------------------------------------
+//     Project   : AtmaGamingTest                                               ------------------
+//     Date      : 2024-11-09                                                   ------------------
+//     Author    : viniciusteologia@gmail.com                                   ------------------
+//     -------------------------------------------------------------------------------------------
+//     -------------------------------------------------------------------------------------------
+
+
 #include "WeaponSystem.h"
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 #include "TimerManager.h"
 
+//     -------------------------------------------------------------------------------------------
 UWeaponSystem::UWeaponSystem()
 {
     PrimaryComponentTick.bCanEverTick = true;
     bIsReloading = false;
 }
 
+//     -------------------------------------------------------------------------------------------
 void UWeaponSystem::BeginPlay()
 {
     Super::BeginPlay();
     CurrentAmmo = MaxAmmo;
 }
 
+//     -------------------------------------------------------------------------------------------
 void UWeaponSystem::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
+//     -------------------------------------------------------------------------------------------
 void UWeaponSystem::FireWeapon(FVector Origin, FVector TargetDirection, float Range)
 {
     FVector EndPoint = Origin + (TargetDirection * Range);
@@ -35,10 +56,8 @@ void UWeaponSystem::FireWeapon(FVector Origin, FVector TargetDirection, float Ra
         AActor* HitActor = HitResult.GetActor();
         if (HitActor)
         {
-            // Verifica se o ator tem o HealthComponent
             if (UHealthComponent* HealthComp = HitActor->FindComponentByClass<UHealthComponent>())
             {
-                // Aplica o dano através da função TakeDamage
                 HealthComp->TakeDamage(ShotDamage);
 
                 UE_LOG(LogTemp, Warning, TEXT("Shot hit %s for %f damage. Remaining Health: %f"),
@@ -53,6 +72,7 @@ void UWeaponSystem::FireWeapon(FVector Origin, FVector TargetDirection, float Ra
     }
 }
 
+//     -------------------------------------------------------------------------------------------
 void UWeaponSystem::HandleFire(FVector Origin, FVector TargetDirection)
 {
     if (bIsReloading || CurrentAmmo <= 0)
@@ -70,6 +90,7 @@ void UWeaponSystem::HandleFire(FVector Origin, FVector TargetDirection)
     }
 }
 
+//     -------------------------------------------------------------------------------------------
 bool UWeaponSystem::CanFire() const
 {
     return !bIsReloading && CurrentAmmo > 0;
@@ -81,6 +102,7 @@ void UWeaponSystem::StartReload()
     GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &UWeaponSystem::FinishReload, ReloadTime, false);
 }
 
+//     -------------------------------------------------------------------------------------------
 void UWeaponSystem::FinishReload()
 {
     bIsReloading = false;
@@ -88,8 +110,11 @@ void UWeaponSystem::FinishReload()
     UE_LOG(LogTemp, Warning, TEXT("Reload complete. Ammo refilled."));
 }
 
+//     -------------------------------------------------------------------------------------------
 void UWeaponSystem::StopFiring()
 {
     GetWorld()->GetTimerManager().ClearTimer(ReloadTimerHandle);
     bIsReloading = false;
 }
+
+//     -------------------------------------------------------------------------------------------

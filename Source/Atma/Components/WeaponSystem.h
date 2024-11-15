@@ -1,8 +1,26 @@
+//     -------------------------------------------------------------------------------------------
+//     -------------------------------------------------------------------------------------------
+//     █████╗ ████████╗███╗   ███╗ █████╗      ██████╗  █████╗ ███╗   ███╗██╗███╗   ██╗ ██████╗ 
+//     ██╔══██╗╚══██╔══╝████╗ ████║██╔══██╗    ██╔════╝ ██╔══██╗████╗ ████║██║████╗  ██║██╔════╝ 
+//     ███████║   ██║   ██╔████╔██║███████║    ██║  ███╗███████║██╔████╔██║██║██╔██╗ ██║██║  ███╗
+//     ██╔══██║   ██║   ██║╚██╔╝██║██╔══██║    ██║   ██║██╔══██║██║╚██╔╝██║██║██║╚██╗██║██║   ██║
+//     ██║  ██║   ██║   ██║ ╚═╝ ██║██║  ██║    ╚██████╔╝██║  ██║██║ ╚═╝ ██║██║██║ ╚████║╚██████╔╝
+//     ╚═╝  ╚═╝   ╚═╝   ╚═╝     ╚═╝╚═╝  ╚═╝     ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝
+//     -------------------------------------------------------------------------------------------
+//     -------------------------------------------------------------------------------------------
+//     Project   : AtmaGamingTest                                               ------------------
+//     Date      : 2024-11-09                                                   ------------------
+//     Author    : viniciusteologia@gmail.com                                   ------------------
+//     -------------------------------------------------------------------------------------------
+//     -------------------------------------------------------------------------------------------
+
+
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "../Components/HealthComponent.h"
+//
 #include "WeaponSystem.generated.h"
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable, BlueprintType)
@@ -19,6 +37,7 @@ protected:
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	// methods
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void FireWeapon(FVector Origin, FVector TargetDirection, float Range);
 
@@ -31,8 +50,8 @@ public:
 	void StartReload();
 	void FinishReload();
 	void StopFiring();
-
-	// Configurações de arma
+	
+	// Properties
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	float FireRange = 1000.0f;
 
@@ -43,7 +62,7 @@ public:
 	float DebugDuration = 1.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
-	float ShotDamage = 20.0f; // Dano por tiro
+	float ShotDamage = 20.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	int32 MaxAmmo = 10;

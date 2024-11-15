@@ -1,3 +1,20 @@
+//     -------------------------------------------------------------------------------------------
+//     -------------------------------------------------------------------------------------------
+//     █████╗ ████████╗███╗   ███╗ █████╗      ██████╗  █████╗ ███╗   ███╗██╗███╗   ██╗ ██████╗ 
+//     ██╔══██╗╚══██╔══╝████╗ ████║██╔══██╗    ██╔════╝ ██╔══██╗████╗ ████║██║████╗  ██║██╔════╝ 
+//     ███████║   ██║   ██╔████╔██║███████║    ██║  ███╗███████║██╔████╔██║██║██╔██╗ ██║██║  ███╗
+//     ██╔══██║   ██║   ██║╚██╔╝██║██╔══██║    ██║   ██║██╔══██║██║╚██╔╝██║██║██║╚██╗██║██║   ██║
+//     ██║  ██║   ██║   ██║ ╚═╝ ██║██║  ██║    ╚██████╔╝██║  ██║██║ ╚═╝ ██║██║██║ ╚████║╚██████╔╝
+//     ╚═╝  ╚═╝   ╚═╝   ╚═╝     ╚═╝╚═╝  ╚═╝     ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝
+//     -------------------------------------------------------------------------------------------
+//     -------------------------------------------------------------------------------------------
+//     Project   : AtmaGamingTest                                               ------------------
+//     Date      : 2024-11-09                                                   ------------------
+//     Author    : viniciusteologia@gmail.com                                   ------------------
+//     -------------------------------------------------------------------------------------------
+//     -------------------------------------------------------------------------------------------
+
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -6,11 +23,10 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "../Components/WeaponSystem.h"
-#include "../Player/PlayerShip.h" // Inclua este cabeçalho para reconhecer APlayerShip
+#include "../Player/PlayerShip.h"
 //
 #include "Enemy.generated.h"
-// Se preferir usar uma declaração antecipada, substitua a inclusão por esta linha:
-// class APlayerShip;
+
 
 UCLASS()
 class ATMA_API AEnemy : public APawn
@@ -26,9 +42,20 @@ protected:
 public:    
 	virtual void Tick(float DeltaTime) override;
 
+	// methods
 	void ResetFireCooldown();
-	
-	// Componentes e propriedades
+
+	UFUNCTION()
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, 
+	    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+private:
+	void FollowPlayer();
+  
+	void AttackPlayer();
+
+public:
+	// Properties
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Collision")
 	UBoxComponent* BoxComponent;
 
@@ -46,21 +73,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
 	float DamageAmount = 10.0f;
-
-private:
-	void FollowPlayer();
-  
-  void AttackPlayer();
-
-	UFUNCTION()
-	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, 
-	    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
+	
 	UPROPERTY()
 	UWeaponSystem* WeaponSystem;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
-	float FireCooldown = 1.0f; // Tempo mínimo entre disparos em segundos
+	float FireCooldown = 1.0f;
 
 	FTimerHandle FireCooldownTimer;
 	bool bCanFire = true;
