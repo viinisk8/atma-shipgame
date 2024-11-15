@@ -1,24 +1,7 @@
-//     -------------------------------------------------------------------------------------------
-//     -------------------------------------------------------------------------------------------
-//     █████╗ ████████╗███╗   ███╗ █████╗      ██████╗  █████╗ ███╗   ███╗██╗███╗   ██╗ ██████╗ 
-//     ██╔══██╗╚══██╔══╝████╗ ████║██╔══██╗    ██╔════╝ ██╔══██╗████╗ ████║██║████╗  ██║██╔════╝ 
-//     ███████║   ██║   ██╔████╔██║███████║    ██║  ███╗███████║██╔████╔██║██║██╔██╗ ██║██║  ███╗
-//     ██╔══██║   ██║   ██║╚██╔╝██║██╔══██║    ██║   ██║██╔══██║██║╚██╔╝██║██║██║╚██╗██║██║   ██║
-//     ██║  ██║   ██║   ██║ ╚═╝ ██║██║  ██║    ╚██████╔╝██║  ██║██║ ╚═╝ ██║██║██║ ╚████║╚██████╔╝
-//     ╚═╝  ╚═╝   ╚═╝   ╚═╝     ╚═╝╚═╝  ╚═╝     ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝
-//     -------------------------------------------------------------------------------------------
-//     -------------------------------------------------------------------------------------------
-//     Project   : AtmaGamingTest                                               ------------------
-//     Date      : 2024-11-14                                                   ------------------
-//     Author    : viniciusteologia@gmail.com                                   ------------------
-//     -------------------------------------------------------------------------------------------
-//     -------------------------------------------------------------------------------------------
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-//
 #include "WeaponSystem.generated.h"
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable, BlueprintType)
@@ -35,19 +18,20 @@ protected:
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	// methods
-
-	void StartReload();
-	void FinishReload();
-	
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void FireWeapon(FVector Origin, FVector TargetDirection, float Range);
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void HandleFire();
-	
-	// Properties
-	
+	void HandleFire(FVector Origin, FVector TargetDirection);
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	bool CanFire() const;
+
+	void StartReload();
+	void FinishReload();
+	void StopFiring();
+
+	// Configurações de arma
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	float FireRange = 1000.0f;
 
@@ -56,14 +40,18 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	float DebugDuration = 1.0f;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	float ShotDamage = 20.0f; // Dano por tiro
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	int32 MaxAmmo = 10;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	float ReloadTime = 4.0f;
-	
+
+private:
 	int32 CurrentAmmo;
 	bool bIsReloading;
-	FTimerHandle ReloadTimerHandle; 
+	FTimerHandle ReloadTimerHandle;
 };
