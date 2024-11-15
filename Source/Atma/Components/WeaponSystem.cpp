@@ -24,10 +24,10 @@ void UWeaponSystem::FireWeapon(FVector Origin, FVector TargetDirection, float Ra
 {
     FVector EndPoint = Origin + (TargetDirection * Range);
     FHitResult HitResult;
-    
+
     FCollisionQueryParams Params;
     Params.AddIgnoredActor(GetOwner());
-    
+
     bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, Origin, EndPoint, ECC_Visibility, Params);
 
     if (bHit)
@@ -35,8 +35,13 @@ void UWeaponSystem::FireWeapon(FVector Origin, FVector TargetDirection, float Ra
         AActor* HitActor = HitResult.GetActor();
         if (HitActor)
         {
-            UGameplayStatics::ApplyDamage(HitActor, ShotDamage, GetOwner()->GetInstigatorController(), GetOwner(), nullptr);
-            UE_LOG(LogTemp, Warning, TEXT("Shot hit %s for %f damage"), *HitActor->GetName(), ShotDamage);
+            // Verifica se o ator tem o HealthComponent
+            if (UHealthComponent* HealthComp = HitActor->FindComponentByClass<UHealthComponent>())
+            {
+                // Subtrai o dano do valor de Health diretamente
+                HealthComp->Health -= ShotDamage;
+                UE_LOG(LogTemp, Warning, TEXT("Shot hit %s for %f damage. Remaining Health: %f"), *HitActor->GetName(), ShotDamage, HealthComp->Health);
+            }
         }
     }
 

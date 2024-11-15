@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "../Components/HealthComponent.h"
 #include "WeaponSystem.generated.h"
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable, BlueprintType)

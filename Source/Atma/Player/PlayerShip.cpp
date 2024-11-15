@@ -26,6 +26,7 @@ APlayerShip::APlayerShip()
 	RootComponent = BoxComponent;
 	BoxComponent->SetBoxExtent(FVector(50.0f, 50.0f, 50.0f));
 	BoxComponent->SetCollisionProfileName(TEXT("Pawn"));
+	BoxComponent->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 
 	//
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
